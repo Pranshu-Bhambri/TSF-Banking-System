@@ -1,0 +1,43 @@
+<%- include("partials/header2"); -%>
+
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-4">Customer Details</h1>
+            <div class="cust-details">
+                <h2 class="cust-name"><%= name %></h2>
+                <div class="contact">
+                    <span class="contact-email">Email: <%= email %></span>
+                    <span class="contact-email">Account Number: <%= accno %></span>
+                    <span class="contact-mobile">Mobile: <%= mobile %></span>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="balance-and-transfer">
+                <h5 id= "display-balance" class="display-balance">Balance: ₹<%= balance %></h5>
+                <input id="cust-balance" type="hidden" name="custBalance" value="<%= balance %>">
+                <a id="transfer-money-btn" class="btn btn-primary transfer-btn" href="/customers/<%= _id %>/transfer" role="button">Transfer Money</a>
+            </div>
+        </div>
+  
+        <!-- Modal -->
+        <div class="modal fade" id="errorModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Cannot Transfer!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 id="fatal-balance-error">You cannot transfer money as you already have minimum bank balance i.e ₹100.</h6>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Dismiss</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+
+
+<%- include("partials/footercustomer"); -%>

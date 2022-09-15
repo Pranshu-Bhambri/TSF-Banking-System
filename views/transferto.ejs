@@ -1,0 +1,96 @@
+<%- include("partials/header2"); -%>
+
+    <div id="alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Transaction Failed!</strong> Sorry, we could not complete the transaction at the moment, please try again later.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-4">Transaction Details</h1>
+            <div class="transacrion-details">
+                <div class="payer-details">
+                    <span class="payer-name">Payer Name: <%= fromName %></span>
+                    <span class="payer-acc">Payer Account Number: <%= fromaccno %></span>
+                    <h5 id= "payer-balance" class="payer-balance">Payer's Current Balance: ₹<%= balance %></h5>
+                </div>
+                <div class="payee-details">
+                    <span class="payee-name">Payee Name: <%= toName %></span>
+                    <span class="payee-acc">Payee Account Number: <%= toaccno %></span>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="checkbox-and-transfer">
+                <div class="checkbox-and-label">
+                    <input type="checkbox" id="checkbox" class="checkbox" name="tnc">
+                    <label for="checkbox" id="checkbox-label">I agree to the TSF Banking <a href="/#policy">Privacy Policy</a> </label><br>
+                </div>
+                <button type="button" id="transfer-now-btn" class="btn btn-primary transfer-now-btn" data-bs-toggle="modal" data-bs-target="#transferModal" disabled>Transfer
+                </button>
+            </div>
+        </div>
+    </div>
+  
+    <!-- Modal -->
+    <div class="modal fade" id="transferModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="transferModalLabel">Transfer to <%= toName %></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="transfer-form">
+                    <div class="mb-3">
+                      <label for="transfer-amount" class="form-label">Enter Amount</label>
+                      <input id="hidden-name" type="hidden" name="recipient" value="<%= toName %>">
+                      <input id="hidden-balance" type="hidden" name="balance" value="<%= balance %>">
+                      <input type="number" class="form-control transfer-amount" id="transfer-amount" placeholder="INR" required autocomplete="off">
+                      <span id="zero-error" class="zero-error">Please enter an amount more than 0.</span>
+                      <span id="balance-error" class="balance-error">Not enough balance!</span>
+                      <span id="min-balance-error" class="min-balance-error">Remaining balance after transaction cannot be less than ₹100. Your current balance is ₹<%= balance %>.</span>
+                      <span id="fatal-balance-error" class="fatal-balance-error">You cannot transfer money as you already have minimum bank balance i.e ₹100</span>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" id="submit-amount-btn" class="btn btn-success">Transfer Now</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        </div>
+    </div>
+  
+    <!-- Modal -->
+    <div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmModal" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 id="confirm-modal-title" class="modal-title" id="confirmModalLabel">Confirm</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/customers" method="post" id="confirm-form">
+                    <div class="mb-3">
+                        <p id="confirm-p" class="confirm-p"></p>
+                        <input id="hidden-amount" type="hidden" name="transferAmount" value="">
+                        <input id="reqCustID" type="hidden" name="" value="<%= returnToCustID %>">
+                        <input id="reqTransferID" type="hidden" name="" value="<%= returnToTransferID %>">
+
+                        <!-- <% console.log("from ejs file", returnToCustID, returnToTransferID); %> -->
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="cancel-btn" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button id="confirm-btn" type="submit" class="btn btn-success">Confirm</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        </div>
+    </div>
+
+<%- include("partials/footertransferto"); -%>

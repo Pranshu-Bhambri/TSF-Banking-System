@@ -1,0 +1,54 @@
+<%- include("partials/header2"); -%>
+
+<% let i=1; %>
+
+<h2 class="customers-heading">Transfer from <%= name %> to</h2>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col" class="table-email-head">Email</th>
+        <th scope="col">AccNo.</th>
+        <th scope="col">Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+
+        <%  custs.forEach(function(cust){ %>
+            <tr>
+                <th scope="row">
+                    <a href="/customers/<%= requestedCustID %>/transferto-<%= cust._id %>">
+                        <%= `${i}` %>
+                    </a>
+                </th>
+                <td>
+                    <a href="/customers/<%= requestedCustID %>/transferto-<%= cust._id %>">
+                        <%= cust.name %>
+                    </a>
+                </td>
+                <td class="table-email-data">
+                    <a href="/customers/<%= requestedCustID %>/transferto-<%= cust._id %>">
+                        <%= cust.email %>
+                    </a>
+                </td>
+                <td>
+                    <a href="/customers/<%= requestedCustID %>/transferto-<%= cust._id %>">
+                        <%= cust.AccNo %>
+                    </a>
+                </td>
+                <td>
+                    <a href="/customers/<%= requestedCustID %>/transferto-<%= cust._id %> " class="check-bal">
+                        <%= cust.balance %>
+                    </a>
+                </td>
+            </tr>
+            <% i++; %>
+        <% }) %>
+    </tbody>
+  </table>
+  
+  <h6 class="transfer-tip">Select a customer to proceed for transaction.</h6>
+
+<%- include("partials/footertransfer"); -%>

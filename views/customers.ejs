@@ -1,0 +1,66 @@
+<%- include("partials/header2"); -%>
+
+<% let i=1; %>
+
+<input id="hidden-alert" type="hidden" name="" value="<%= amount %>">
+<input id="hidden-fromName" type="hidden" name="" value="<%= fromReqName %>">
+<input id="hidden-toName" type="hidden" name="" value="<%= toReqName %>">
+
+<% console.log("Value to pop alert: ", amount); %>
+
+<div id="alert" class="alert alert-success alert-dismissible fade show" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<h2 class="customers-heading">Our Customers</h2>
+
+<table class="table table-light">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col" class="table-email-head">Email</th>
+        <th scope="col">AccNo.</th>
+        <th scope="col">Balance(₹)</th>
+      </tr>
+    </thead>
+    <tbody>
+        <%  custs.forEach(function(cust){ %>
+            <tr class="data-row">
+                <th class="serial" scope="row">
+                    <a href="/customers/<%= cust._id %>">
+                        <%= `${i}` %>
+                    </a>
+                </th>
+                <td>
+                    <a href="/customers/<%= cust._id %>">
+                        <%= cust.name %>
+                    </a>
+                </td>
+                <td class="table-email-data">
+                    <a href="/customers/<%= cust._id %>">
+                        <%= cust.email %>
+                    </a>
+                </td>
+                <td>
+                    <a href="/customers/<%= cust._id %>">
+                        <%= cust.AccNo %>
+                    </a>
+                </td>
+                <td>
+                    <a href="/customers/<%= cust._id %>" class="check-bal">
+                        <%= cust.balance %>
+                    </a>
+                </td>
+            </tr>
+
+            <% i++; %>
+        <% }) %>
+    </tbody>
+</table>
+
+<h6 class="customers-tip">Select a customer to view details or to proceed for a transaction.</h6>
+
+<p class="transaction-tip">Changes after a transacion may take a while to reflect. Refreshing the page might help.</p>
+
+<%- include("partials/footercustomers"); -%>
