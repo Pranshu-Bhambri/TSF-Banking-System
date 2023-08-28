@@ -17,7 +17,7 @@ app.use(express.static("public"));
 
 // mongoose.connect("mongodb://localhost:27017/bankDB", {useNewUrlParser: true, useUnifiedTopology: true});
 
-mongoose.connect("mongodb+srv://admin-pranshu:MongoXPranshu24@cluster0.pzfo6fe.mongodb.net/bankDB", {useNewUrlParser: true, useUnifiedTopology: true});
+// remove cred_mongo
 
 const bankSchema = new mongoose.Schema({
   name: String,
