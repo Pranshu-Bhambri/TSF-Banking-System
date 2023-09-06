@@ -13,7 +13,6 @@
             </div>
             <hr class="my-4">
             <div class="balance-and-transfer">
-                <h5 id= "display-balance" class="display-balance">Balance: ₹<%= balance %></h5>
                 <input id="cust-balance" type="hidden" name="custBalance" value="<%= balance %>">
                 <a id="transfer-money-btn" class="btn btn-primary transfer-btn" href="/customers/<%= _id %>/transfer" role="button">Transfer Money</a>
             </div>
