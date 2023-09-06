@@ -15,9 +15,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-// mongoose.connect("mongodb://localhost:27017/bankDB", {useNewUrlParser: true, useUnifiedTopology: true});
-
-// remove cred_mongo
+mongoose.connect("mongodb://localhost:27017/bankerDB", {useNewUrlParser: true, useUnifiedTopology: true});
 
 const bankSchema = new mongoose.Schema({
   name: String,
@@ -176,7 +174,7 @@ app.get("/customers/:custID/transfer", function(req, res){
     returnToCustID= requestedCustID;
     Customer.findOne({_id: requestedCustID}, function(err, cust){
         if(cust){
-            if(cust.balance> 100){
+            if(cust.balance== 100){
                 // find all customers other than the person who is transferring the money
                 Customer.find({_id: {$ne: requestedCustID}}, function(err, custs){
                     res.render("transfer", {
@@ -210,14 +208,14 @@ app.get("/customers/:custID/transferto-:transferID", function(req, res){
     const requestedFromCustID= req.params.custID;
     returnToCustID= requestedFromCustID;
     const requestedTransferID= req.params.transferID;
-    returnToTransferID= requestedTransferID;
+    returnToTransferID= req.params.custID;
     
     console.log("from get transferto- method", returnToCustID, returnToTransferID);
 
     // returnToCustID= undefined;
     // returnToTransferID= undefined;
 
-    if(requestedFromCustID!== requestedTransferID){
+    if(requestedFromCustID== requestedTransferID){
 
         Customer.findOne({_id: requestedFromCustID}, function(err, fromCust){
             // console.log(fromCust.balance);
@@ -285,7 +283,7 @@ app.post("/customers", function(req, res){
     }
     
     func().then(function(){
-        Customer.updateOne({_id: returnToCustID}, {$inc: {balance: -transferAmount}}, function(err){
+        Customer.updateOne({_id: returnToCustID}, {$inc: {balance: transferAmount}}, function(err){
                 if(err){
                     console.log(err);
                 }
@@ -295,7 +293,7 @@ app.post("/customers", function(req, res){
                 }
             })
 
-            Customer.updateOne({_id: returnToTransferID}, {$inc: {balance: transferAmount}}, function(err){
+            Customer.updateOne({_id: returnToTransferID}, {$inc: {balance: -transferAmount}}, function(err){
                 if(err){
                     console.log(err);
                 }
@@ -372,9 +370,7 @@ app.post("/customers", function(req, res){
         // }, 2000);
 
         // transferAmount= undefined;
-        setTimeout(function(){
             returnToCustID= undefined, returnToTransferID= undefined;
-        }, 2000);
         // res.redirect("/customers");
         // console.log(returnToCustID);
         // res.redirect(`/customers/${returnToCustID}`);
@@ -403,8 +399,8 @@ app.get('*', function(req, res){            //render 404 page when url is incorr
 //     console.log("Server started on port 3000");
 // });
 
-app.listen(process.env.PORT || 3000, function() {
-    console.log("Server started on port 3000");
+app.listen(process.env.PORT || 5000, function() {
+    console.log("Server started on port 5000");
 });
 
 
@@ -413,32 +409,3 @@ app.listen(process.env.PORT || 3000, function() {
 // <% console.log(requestedCustID); %>
 
 // <% console.log(custID===requestedCustID); %> -->
-
-
-
-
-// db.transfers.insertMany([{_id: 1, name: "Paarth Agarwal", email: "paarth12a@gmail.com", mobile: 9888127640, balance: 10000}, 
-//                      {_id: 2, name: "Rohit Kumar", email: "kumar36rohit@gmail.com", mobile: 8860411290, balance: 10000},
-//                      {_id: 3, name: "Rohan Singh", email: "r19singh@gmail.com", mobile: 8964223091, balance: 10000},
-//                      {_id: 4, name: "Tanmay Sharma", email: "sharma.tan12@gmail.com", mobile: 9666400512, balance: 10000},
-//                      {_id: 5, name: "Swastik Kumar", email: "swaskumar19@gmail.com", mobile: 9233512608, balance: 10000},
-//                      {_id: 6, name: "Suresh Raina", email: "rainasuresh@gmail.com", mobile: 7796742089, balance: 10000},
-//                      {_id: 7, name: "Hitesh Chopra", email: "chopra.hitesh@gmail.com", mobile: 8133204611, balance: 10000},
-//                      {_id: 8, name: "Abhinav Mathur", email: "matabh99@gmail.com", mobile: 9193561200, balance: 10000},
-//                      {_id: 9, name: "Mahendra Singh", email: "msdhoni@gmail.com", mobile: 9991264000, balance: 10000},
-//                      {_id: 10, name: "Raghav Dhawan", email: "dhawan.raghav@gmail.com", mobile: 7633499909, balance: 10000}
-//                     ])
-
-
-
-// db.transfers.insertMany([{_id: 1, name: "Paarth Agarwal", email: "paarth12a@gmail.com", AccNo: "XXX9777XXX8", mobile: 9888127640, balance: 10000}, 
-//                      {_id: 2, name: "Rohit Kumar", email: "kumar36rohit@gmail.com", AccNo: "XXX3477XXX6", mobile: 8860411290, balance: 10000},
-//                      {_id: 3, name: "Rohan Singh", email: "r19singh@gmail.com", AccNo: "XXX8640XXX9", mobile: 8964223091, balance: 10000},
-//                      {_id: 4, name: "Tanmay Sharma", email: "sharma.tan12@gmail.com", AccNo: "XXX9777XXX9", mobile: 9666400512, balance: 10000},
-//                      {_id: 5, name: "Swastik Kumar", email: "swaskumar19@gmail.com", AccNo: "XXX4698XXX1", mobile: 9233512608, balance: 10000},
-//                      {_id: 6, name: "Suresh Raina", email: "rainasuresh@gmail.com", AccNo: "XXX7931XXX1", mobile: 7796742089, balance: 10000},
-//                      {_id: 7, name: "Hitesh Chopra", email: "chopra.hitesh@gmail.com", AccNo: "XXX8842XXX5", mobile: 8133204611, balance: 10000},
-//                      {_id: 8, name: "Abhinav Mathur", email: "matabh99@gmail.com", AccNo: "XXX3691XXX3", mobile: 9193561200, balance: 10000},
-//                      {_id: 9, name: "Mahendra Singh", email: "msdhoni@gmail.com", AccNo: "XXX7788XXX5", mobile: 9991264000, balance: 10000},
-//                      {_id: 10, name: "Raghav Dhawan", email: "dhawan.raghav@gmail.com", AccNo: "XXX0946XXX5", mobile: 7633499909, balance: 10000}
-//                     ])
